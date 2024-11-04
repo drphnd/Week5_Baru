@@ -34,16 +34,16 @@ fun AppRouting(){
                 ListMovieView(navController = navController)
             }
 
-            composable(route = listScreen.MovieDetail.name+"/{title}",
+            composable(route = listScreen.MovieDetail.name+"/{id}",
                 arguments = listOf(
-                    navArgument("title"){
-                        type = NavType.StringType
+                    navArgument("id"){
+                        type = NavType.IntType
                     }
                 )
                 ) {
                 backStackEntry ->
-                val title = backStackEntry.arguments?.getString("title")
-                MovieDetailView(title!!)
+                val id= backStackEntry.arguments?.getInt("id")
+                MovieDetailView(id!!)
             }
         }
     }

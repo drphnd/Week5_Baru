@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,28 +32,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.week5_baru.data.DataSource
+import com.example.week5_baru.repository.MovieDBContainer
 import com.example.week5_baru.viewmodel.MovieDetailViewModel
 
 @Composable
 fun MovieDetailView(
-    title: String,
+    id: Int,
     viewModel: MovieDetailViewModel = viewModel()
 ){
-    viewModel.setMovie(title)
+    viewModel.setMovie(id)
     val movie by viewModel.movie.collectAsState()
 
     Column {
         Box(
             contentAlignment = Alignment.BottomEnd
         ) {
-            Image(
-                painter = painterResource(movie.posterPath.toInt()),
-                contentDescription = "Movie image",
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(MovieDBContainer.BASE_IMG + movie.posterPath)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "Movie Image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp),
-                contentScale = ContentScale.Inside
+                    .height(500.dp),
+                contentScale = ContentScale.FillWidth
             )
 
             FloatingActionButton(
@@ -88,7 +95,7 @@ fun MovieDetailView(
             )
 
             Text(
-                text = "(${movie.getYear()})",
+                text = "(2024)",
                 textAlign = TextAlign.Right,
                 modifier = Modifier.weight(1f)
             )
@@ -121,5 +128,5 @@ fun MovieDetailView(
 @Preview(showBackground = true)
 @Composable
 private fun MovieDetailViewPreview(){
-    MovieDetailView(DataSource().loadMovie()[1].title)
+//    MovieDetailView(DataSource().loadMovie()[1].title)
 }

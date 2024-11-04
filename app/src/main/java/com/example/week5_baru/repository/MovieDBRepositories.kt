@@ -5,7 +5,7 @@ import com.example.week5_baru.model.NowPlaying
 import com.example.week5_baru.model.Result
 import com.example.week5_baru.service.MovieDBService
 import java.text.SimpleDateFormat
-
+//repository kita butuh panggil service, di repository harus olah data yang diservice untuk diolah
 class MovieDBRepositories(private val movieDBService: MovieDBService) {
 
     suspend fun getNowPlaying(page: Int = 1, language: String = "en-US"): List<Result>{
@@ -13,7 +13,7 @@ class MovieDBRepositories(private val movieDBService: MovieDBService) {
         return  listResult
 
     }
-
+//movie detail ga ada ID, Sementara di result ada id, sehingga perlu menterjemahkan dna mengadjust hasil dari result dipindah ke movie. Gunanya memanage hasil dari service yang belum tentu sama dengan datanya
     suspend fun getMovieDetail(movieId: Int): Movie{
         val respond = movieDBService.getDetailMovie(movieId)
 

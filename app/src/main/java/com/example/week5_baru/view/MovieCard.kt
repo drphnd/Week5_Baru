@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,18 +30,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.week5_baru.data.DataSource
 import com.example.week5_baru.model.Movie
+import com.example.week5_baru.model.Result
+import com.example.week5_baru.repository.MovieDBContainer
 
 @Composable
 fun MovieCard(
-    movie: Movie,
+    movie: Result,
     onLikeClick: () -> Unit = {},
     onCardClick: () -> Unit = {}
 ){
@@ -58,8 +64,11 @@ fun MovieCard(
             Box(
                 contentAlignment = Alignment.BottomEnd
             ){
-                Image(
-                    painter = painterResource(movie.posterPath.toInt()),
+                AsyncImage(
+                    model = ImageRequest.Builder(context = LocalContext.current)
+                        .data(MovieDBContainer.BASE_IMG + movie.poster_path)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = "Movie Image",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -75,7 +84,7 @@ fun MovieCard(
                     Icon(
                         imageVector = Icons.Filled.Favorite,
                         contentDescription = "Fav",
-                        tint = if(movie.isLiked){
+                        tint = if(true){
                             Color(0xFFEC407A)
                         }else{
                             Color(0xFF787878)
@@ -100,7 +109,7 @@ fun MovieCard(
                 )
 
                 Text(
-                    text = "(${movie.getYear()})",
+                    text = "(2024)",
                     textAlign = TextAlign.Right,
                     modifier = Modifier.weight(1f)
                 )
@@ -117,7 +126,7 @@ fun MovieCard(
                     tint = Color(0xFFFDCC0D)
                 )
                 Text(
-                    text = "${movie.voteAverage}/10.0",
+                    text = "9/10.0",
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
@@ -137,5 +146,5 @@ fun MovieCard(
 @Preview(showBackground = true)
 @Composable
 private fun MovieCardPreview(){
-    MovieCard(DataSource().loadMovie()[3])
+//    MovieCard(DataSource().loadMovie()[3])
 }

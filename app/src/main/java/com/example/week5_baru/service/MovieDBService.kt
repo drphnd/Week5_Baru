@@ -7,7 +7,7 @@ import org.intellij.lang.annotations.Language
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-
+//listing api end poinnya dan parameter yang perlu diend poin dan return nya apa
 interface MovieDBService {
 
     @GET("now_playing")
